@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Logo from "../Logo";
 import { IconLinkedIn, IconDownload } from "./Icons";
 
 export default function Navbar({ lang, setLang, t }) {
   const navRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handler = () =>
@@ -12,14 +13,16 @@ export default function Navbar({ lang, setLang, t }) {
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <nav ref={navRef} id="navbar">
       <Logo />
-      <ul className="nav-links">
-        <li><a href="#services">{t.nav.services}</a></li>
-        <li><a href="#portfolio">{t.nav.portfolio}</a></li>
-        <li><a href="#process">{t.nav.process}</a></li>
-        <li><a href="#contact">{t.nav.contact}</a></li>
+      <ul className={`nav-links${menuOpen ? ' open' : ''}`}>
+        <li><a href="#services" onClick={closeMenu}>{t.nav.services}</a></li>
+        <li><a href="#portfolio" onClick={closeMenu}>{t.nav.portfolio}</a></li>
+        <li><a href="#process" onClick={closeMenu}>{t.nav.process}</a></li>
+        <li><a href="#contact" onClick={closeMenu}>{t.nav.contact}</a></li>
       </ul>
       <div className="nav-right">
         <select
@@ -37,7 +40,15 @@ export default function Navbar({ lang, setLang, t }) {
         <a href={`/${t.cvFile}`} download className="nav-icon" title={t.hero.cv}>
           <IconDownload />
         </a>
-        <a href="#contact" className="nav-cta">{t.nav.cta}</a>
+        <a href="#contact" className="nav-cta" onClick={closeMenu}>{t.nav.cta}</a>
+        <button
+          className="nav-hamburger"
+          onClick={() => setMenuOpen(v => !v)}
+          aria-label="Menu"
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? '✕' : '☰'}
+        </button>
       </div>
     </nav>
   );

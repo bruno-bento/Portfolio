@@ -1,7 +1,24 @@
+import { useEffect, useRef } from "react";
 import { useFadeUp } from "../hooks/useFadeUp";
 
 export default function Process({ t }) {
   const fadeRef = useFadeUp();
+  const stepsRef = useRef(null);
+
+  useEffect(() => {
+    const steps = stepsRef.current?.querySelectorAll('.process-step');
+    if (!steps?.length) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    steps.forEach(s => obs.observe(s));
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <section id="process">
@@ -12,7 +29,7 @@ export default function Process({ t }) {
         </div>
         <p className="section-note">{t.process.note}</p>
       </div>
-      <div className="process-steps">
+      <div className="process-steps" ref={stepsRef}>
         {t.process.steps.map(s => (
           <div key={s.n} className="process-step fade-up">
             <div className="process-dot">{s.n}</div>

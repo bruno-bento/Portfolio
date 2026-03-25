@@ -60,7 +60,11 @@ export default function Hero({ t }) {
         <p className="hero-sub">{t.hero.sub}</p>
         <div className="hero-actions">
           <a href="#contact" className="btn-primary"><span>{t.hero.cta}</span></a>
-          <a href="#portfolio" className="btn-ghost">{t.hero.ctaGhost} <span className="arrow">→</span></a>
+          {
+            /*
+            <a href="#portfolio" className="btn-ghost">{t.hero.ctaGhost} <span className="arrow">→</span></a>
+            */
+          }
         </div>
         <div className="hero-bottom-row">
           <div className="hero-stats">
